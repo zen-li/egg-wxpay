@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="safari webkit iphone mobile">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="微信支付">
+    <meta name="description" content="微信支付">
+    <title>微信支付 NodeJs DEMO</title>
+
+    <!--<script src="public/js/uaredirect.js"></script>-->
+    <script src="public/js/loadFiles.js"></script>
+</head>
+<body>
+<div>
+    <div class="center-stage" id="center-stage">
+        <div class="logo-wrapper">
+            <img src="public/images/logo.png" alt="" class="logo">
+            <div class="donate-us" onclick="window.open('/user/login')">
+                <i class="fal fa-user"></i>登录账户
+            </div>
+        </div>
+
+        <div class="row row-top">
+                    <div class="col-mark col-xs-12">
+                        <div class="box-mark box-n1 box-h1"
+                             onclick="window.open('/native')"
+                             data-toggle="tooltip" data-placement="top" title="" data-original-title="点击开始Native支付">
+                            <p class="title">Native支付</p>
+                            <p class="desc">Native微信支付</p>
+                            <p class="desc">返回二维码的支付方式</p>
+                            <i class="fa fa-mobile-android-alt"></i>
+                        </div>
+                    </div>
+                    <div class="col-mark col-xs-12">
+                        <div class="box-mark box-n2 box-h1"
+                             onclick="window.open('/jsapi')"
+                             data-toggle="tooltip" data-placement="top" title="" data-original-title="点击开始公众号支付">
+                            <p class="title">公众号支付</p>
+                            <p class="desc">微信内网页js支付</p>
+                            <p class="desc">直接唤醒微信支付的支付方式</p>
+                            <i class="fa fa-cubes"></i>
+                        </div>
+                    </div>
+                    <div class="col-mark col-xs-12">
+                        <div class="box-mark box-n4 box-h1"
+                             onclick="window.open('/h5pay')"
+                             data-toggle="tooltip" data-placement="top" title="" data-original-title="点击开始H5支付">
+                            <p class="title">H5支付</p>
+                            <p class="desc">微信外部网页H5支付</p>
+                            <p class="desc"></p>
+                            <i class="fa fa-language"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-mark col-xs-6">
+                        <div class="box-mark box-n6 box-h1" onclick="window.open('/weibo')"
+                             data-toggle="tooltip" data-placement="bottom" title="" data-original-title="手机扫码关注，电脑点击跳转">
+                            <p class="title">官方微博</p>
+                            <p class="desc">@易兲鸣</p>
+                            <i class="fab fa-weibo"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-mark col-xs-6">
+                        <div class="box-mark box-n7 box-h1" onclick="window.open('/weixin')">
+                            <p class="title">官方微信</p>
+                            <p class="desc">@易兲鸣</p>
+                            <i class="fab fa-weixin"></i>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-mark col-xs-12">
+                        <div class="box-mark box-n8 box-h1"
+                             onclick="window.open('/query')"
+                             data-toggle="tooltip" data-placement="top" title="" data-original-title="点击订单查询">
+                            <p class="title">订单查询</p>
+                            <p class="desc">给一个订单号，查询一笔订单结果</p>
+                            <i class="fab fa-windows"></i>
+                        </div>
+                    </div>
+                    <div class="col-mark col-xs-12">
+                        <div class="box-mark box-n9 box-h1"
+                             onclick="window.open('/refund')"
+                             data-toggle="tooltip" data-placement="top" title="" data-original-title="点击订单退款">
+                            <p class="title">订单退款</p>
+                            <p class="desc">给一个订单号，进行订单退款</p>
+                            <i class="fab fa-apple"></i>
+                        </div>
+                    </div>
+                    <div class="col-mark col-xs-6">
+                        <div class="box-mark box-n10 box-h1"
+                             data-toggle="tooltip" data-placement="bottom" title="" data-original-title="点击给我们发邮件">
+                            <p class="title">合作洽谈</p>
+                            <p class="desc">合作共赢创未来</p>
+                            <div class="mail"><i class="fa fa-envelope"></i>
+                                <p>iteming@126.com</p>
+                                <p>联系我们吧！</p>
+                            </div>
+                            <i class="fa fa-handshake"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-mark col-xs-6">
+                        <div class="box-mark box-n11 box-h1"
+                             onclick="window.open('http://iteming.wang')">
+                            <p class="title">加入技术团队</p>
+                            <i class="fa fa-hand-receiving"></i>
+                        </div>
+                    </div>
+                    <div class="col-mark col-xs-12">
+                        <div class="box-mark box-n12 box-h1" onclick="window.open('http://cvn.io/')"
+                             data-toggle="tooltip" data-placement="bottom" title="" data-original-title="CVN 内容价值网络">
+                            <p class="title">CVN 内容价值网络 cvn.io</p>
+                            <img src="public/images/logo-cvn.png" alt="">
+                        </div>
+                    </div>
+        </div>
+        <div class="copyright">IDNAPI Technologies Limited © IDNAPI.COM
+            <div class="fr">ITEMING@126.COM</div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">公告</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if ($("html").hasClass("desktop")) {
+        $('[data-toggle="tooltip"]').tooltip()
+        $(".logo").on("dblclick", function () {
+            $(document).mousemove(function (e) {
+                var x = e.clientX - document.body.clientWidth / 2;
+                var y = e.clientY - document.body.clientHeight / 2;
+
+                var w = window.innerWidth;
+                $('.full-box').css('transform', 'translateZ(100px) perspective(1000px) rotateX(' + -y / 80 + 'deg) rotateY(' + x / 80 + 'deg)')
+                $('.box-mark').css('box-shadow', -x / 30 + 'px ' + -y / 30 + 'px 20px rgba(0,0,0,.3)');
+            });
+        })
+    }
+    $(function () {
+        //$('#myModal').modal('show');
+        browserRedirect();
+    });
+
+    function browserRedirect() {
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        var bIsMicro = sUserAgent.match(/micromessenger/i) == "micromessenger";
+        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+        var bIsAndroid = sUserAgent.match(/android/i) == "android";
+        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+        if (bIsMicro || bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+            // //跳转移动端页面
+            // window.location.href="/mobile";
+        } else {
+            //跳转pc端页面
+            window.location.href="/";
+        }
+    }
+</script>
+</body>
+</html>

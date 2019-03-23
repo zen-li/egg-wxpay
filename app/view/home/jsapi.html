@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html class="chrome webkit win desktop">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="微信支付">
+    <meta name="description" content="微信支付">
+    <title>微信支付 - 公众号 支付</title>
+
+    <!--<script src="public/js/uaredirect.js"></script>-->
+    <script src="public/js/loadFiles.js"></script>
+</head>
+<body class="page-mobile">
+<div class="container-fluid">
+    <!--<img class="full-bg" src="public/images/bg.png" alt="">-->
+    <!--<div class="center-stage" id="center-stage">-->
+    <div id="center-stage">
+        <div class="row row-top">
+            <div class="col-top col-xs-12">
+                <div class="row row-2nd">
+                    <div class="col-xs-12">
+
+                        <div class="color-white min-height-500">
+                            <p class="title">公众号支付</p>
+                            <form action="/jsapiSubmit" method="post">
+                                <div class="form-group">
+                                    <label for="orderNum">订单号</label>
+                                    <input id="orderNum" name="orderNum" type="text" class="form-control"/>
+                                    <p class="help-block">点击下方生成订单号自动生成一笔订单号。</p>
+                                </div>
+                                <button class="btn btn-default" type="button" onclick="generateNum($('#orderNum'))">生成订单号</button>
+                                <button class="btn btn-primary" type="submit">提交订单</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">IDNAPI Technologies Limited © IDNAPI.COM
+            <div class="fr">ITEMING@126.COM</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

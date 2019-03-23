@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html class="chrome webkit win desktop">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="微信支付">
+    <meta name="description" content="微信支付">
+    <title>微信支付 - 公众号 支付结果</title>
+
+    <!--<script src="public/js/uaredirect.js"></script>-->
+    <script src="public/js/loadFiles.js"></script>
+</head>
+<body class="page-mobile">
+<div class="container-fluid">
+    <!--<img class="full-bg" src="public/images/bg.png" alt="">-->
+    <div class="" id="center-stage">
+        <div class="row row-top">
+            <div class="col-top col-xs-12">
+                <div class="col-xs-12">
+                    <div class="color-white min-height-500">
+                        <p class="title">支付结果</p>
+                        <div class="form-group">
+                            <label class="help-block" style="color:red" id="msg"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">IDNAPI Technologies Limited © IDNAPI.COM
+            <div class="fr">ITEMING@126.COM</div>
+        </div>
+        <input id="payargs" type="text" value="{{payargs}}">
+    </div>
+</div>
+<script>
+    function jsApiCall() {
+        WeixinJSBridge.invoke(
+        "getBrandWCPayRequest",
+        JSON.parse($("#payargs").val()),
+        function (res) {
+            if (res.err_msg == "get_brand_wcpay_request:ok")//成功
+            {
+                window.location.href = "/jsapi?result=success";
+            }
+            else if (res.err_msg == "get_brand_wcpay_request:fail")//失败
+            {
+                $("#msg").text("支付失败，请返回重试");
+            }
+            else if (res.err_msg == "get_brand_wcpay_request:cancel")//取消
+            {
+                window.history.go(-1);
+            }
+        });
+    }
+
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+        }
+        else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+            document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+        }
+    }
+    else {
+        jsApiCall();
+    }
+</script>
+</body>
+</html>

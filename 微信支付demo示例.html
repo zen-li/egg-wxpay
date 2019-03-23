@@ -1,0 +1,220 @@
+<!DOCTYPE html><html><head><title>微信支付demo示例</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style></style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h1 id="微信支付demo示例">微信支付demo示例</h1>
+
+<p>微信支付nodejs demo</p>
+
+
+
+<h3 id="开发步骤">开发步骤</h3>
+
+
+
+<h5 id="1-引入扩展包">1. 引入扩展包</h5>
+
+
+
+<h6 id="11-appextendutiljs-常用工具类库">1.1 app/extend/util.js (常用工具类库)</h6>
+
+
+
+<h6 id="12-appextendwxpayjs-微信支付类库">1.2 app/extend/wxpay.js (微信支付类库)</h6>
+
+
+
+<h5 id="2-packagesjson-添加-微信支付依赖包">2. packages.json 添加 微信支付依赖包</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs xquery"><div class="hljs-line"><span class="hljs-string">"dependencies"</span>: {
+</div><div class="hljs-line">    <span class="hljs-string">"MD5"</span>: <span class="hljs-string">"^1.2.1"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"request"</span>: <span class="hljs-string">"^2.88.0"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"body-parser"</span>: <span class="hljs-string">"^1.18.3"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"xml2js"</span>: <span class="hljs-string">"^0.4.6"</span>
+</div><div class="hljs-line">},
+</div></code></pre>
+
+<h5 id="3-mpn-install-导入依赖包">3. mpn install 导入依赖包</h5>
+
+
+
+<h5 id="4-在要使用的文件里添加微信支付声明-appcontrollerhomejs">4. 在要使用的文件里，添加微信支付声明 app/controller/home.js</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line"><span class="hljs-comment">//引入微信支付插件 (注意插件路径和文件路径)</span>
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> WXPay = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../extend/wxpay'</span>);
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> wxpay = WXPay({
+</div><div class="hljs-line">    <span class="hljs-attr">appid</span>: <span class="hljs-string">'公众号ID'</span>,
+</div><div class="hljs-line">    <span class="hljs-attr">mch_id</span>: <span class="hljs-string">'商户号ID'</span>,
+</div><div class="hljs-line">    <span class="hljs-attr">partner_key</span>: <span class="hljs-string">'商户密钥（证书密码）'</span>,
+</div><div class="hljs-line">    <span class="hljs-attr">pfx</span>: fs.readFileSync(<span class="hljs-string">'././证书路径.p12'</span>),
+</div><div class="hljs-line">});
+</div></code></pre>
+
+
+
+<h5 id="5-在要使用的方法里进行调用">5. 在要使用的方法里，进行调用</h5>
+
+
+
+<h5 id="51-创建扫码支付非固定二维码统一下单接口">5.1 创建扫码支付(非固定二维码，统一下单接口)</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs less"><div class="hljs-line"><span class="hljs-selector-tag">wxpay</span><span class="hljs-selector-class">.createUnifiedOrder</span>({
+</div><div class="hljs-line">    <span class="hljs-attribute">body</span>: <span class="hljs-string">'扫码支付测试'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">out_trade_no</span>: <span class="hljs-string">'API2019010100001003'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">total_fee</span>: <span class="hljs-number">1</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">spbill_create_ip</span>: <span class="hljs-string">'192.168.2.210'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">notify_url</span>: <span class="hljs-string">'http://mp.ngrok.xiaomiqiu.cn/receive/wxReceive'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">trade_type</span>: <span class="hljs-string">'NATIVE'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">product_id</span>: <span class="hljs-string">'1234567890'</span>
+</div><div class="hljs-line">}, <span class="hljs-selector-tag">function</span> (err, result) {
+</div><div class="hljs-line">    <span class="hljs-comment">// 接口返回信息，判断是否创建订单成功</span>
+</div><div class="hljs-line">    <span class="hljs-selector-tag">console</span><span class="hljs-selector-class">.log</span>(result);
+</div><div class="hljs-line">});
+</div></code></pre>
+
+
+
+<h5 id="52-创建扫码支付固定二维码">5.2 创建扫码支付(固定二维码)</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs qml"><div class="hljs-line"><span class="hljs-comment">//提供一个生成支付二维码链接的函数，把url生成二维码给用户扫</span>
+</div><div class="hljs-line"><span class="hljs-built_in">var</span> <span class="hljs-built_in">url</span> = wxpay.createMerchantPrepayUrl({ <span class="hljs-attribute">product_id</span>: <span class="hljs-string">'123456'</span> });
+</div><div class="hljs-line"><span class="hljs-comment">//商户后台收到微信的回调之后，</span>
+</div><div class="hljs-line"><span class="hljs-comment">//调用 createUnifiedOrder() 生成预支付交易单</span>
+</div><div class="hljs-line"><span class="hljs-comment">//将结果的XML数据返回给微信。</span>
+</div></code></pre>
+
+
+
+<h5 id="53-创建公众号支付jsapi小程序支付相同">5.3 创建公众号支付(JSAPI，小程序支付相同)</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs less"><div class="hljs-line"><span class="hljs-comment">//后台调用</span>
+</div><div class="hljs-line"><span class="hljs-selector-tag">wxpay</span><span class="hljs-selector-class">.getBrandWCPayRequestParams</span>({
+</div><div class="hljs-line">    <span class="hljs-attribute">openid</span>: <span class="hljs-string">'微信用户 openid'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">body</span>: <span class="hljs-string">'公众号支付测试'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">detail</span>: <span class="hljs-string">'公众号支付测试'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">out_trade_no</span>: <span class="hljs-string">'20150331'</span>+Math.random().toString().substr(<span class="hljs-number">2</span>, <span class="hljs-number">10</span>),
+</div><div class="hljs-line">    <span class="hljs-attribute">total_fee</span>: <span class="hljs-number">1</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">spbill_create_ip</span>: <span class="hljs-string">'192.168.2.210'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">notify_url</span>: <span class="hljs-string">'http://wxpay_notify_url'</span>
+</div><div class="hljs-line">}, <span class="hljs-selector-tag">function</span>(err, result){
+</div><div class="hljs-line">    <span class="hljs-comment">// in express</span>
+</div><div class="hljs-line">    <span class="hljs-selector-tag">res</span><span class="hljs-selector-class">.render</span>(<span class="hljs-string">'wxpay/jsapi'</span>, { <span class="hljs-attribute">payargs</span>:result })
+</div><div class="hljs-line">    <span class="hljs-comment">// in egg</span>
+</div><div class="hljs-line">    <span class="hljs-selector-tag">await</span> <span class="hljs-selector-tag">ctx</span><span class="hljs-selector-class">.render</span>(<span class="hljs-string">'wxpay/jsapi'</span>, { <span class="hljs-attribute">payargs</span>:result });
+</div><div class="hljs-line">});
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//网页调用参数（以ejs为例）</span>
+</div><div class="hljs-line"><span class="hljs-selector-tag">WeixinJSBridge</span><span class="hljs-selector-class">.invoke</span>(
+</div><div class="hljs-line">    <span class="hljs-string">"getBrandWCPayRequest"</span>, &lt;%-JSON.stringify(payargs)%&gt;, function(res){
+</div><div class="hljs-line">        <span class="hljs-selector-tag">if</span>(res.err_msg == <span class="hljs-string">"get_brand_wcpay_request:ok"</span> ) {
+</div><div class="hljs-line">            <span class="hljs-comment">// success</span>
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">});
+</div></code></pre>
+
+
+
+<h5 id="54-通过商户订单号查询支付结果">5.4 通过商户订单号查询支付结果</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line">wxpay.queryOrder({ 
+</div><div class="hljs-line">    <span class="hljs-attr">out_trade_no</span>:<span class="hljs-string">"API2019010100001003"</span> 
+</div><div class="hljs-line">}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, order</span>)</span>{
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(order);
+</div><div class="hljs-line">});
+</div></code></pre>
+
+
+
+<h5 id="55-通过商户订单号进行订单退款">5.5 通过商户订单号进行订单退款</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs less"><div class="hljs-line"><span class="hljs-selector-tag">wxpay</span><span class="hljs-selector-class">.refundOrder</span>({
+</div><div class="hljs-line">    <span class="hljs-attribute">out_trade_no</span>: <span class="hljs-string">'API2019010100001003'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">total_fee</span>: <span class="hljs-number">1</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">refund_fee</span>: <span class="hljs-number">1</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">notify_url</span>: <span class="hljs-string">'http://mp.ngrok.xiaomiqiu.cn/receive/wxRefund'</span>,
+</div><div class="hljs-line">    <span class="hljs-attribute">out_refund_no</span>: <span class="hljs-string">'RFD2019010100001002'</span>
+</div><div class="hljs-line">}, <span class="hljs-selector-tag">function</span>(err, result){
+</div><div class="hljs-line">    <span class="hljs-selector-tag">console</span><span class="hljs-selector-class">.log</span>(result);
+</div><div class="hljs-line">});
+</div></code></pre>
+
+
+
+<h4 id="6-回调功能">6 回调功能</h4>
+
+
+
+<h5 id="61-服务端处理微信的回调express为例">6.1 服务端处理微信的回调（express为例）</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line"><span class="hljs-comment">// 6.1 支付结果异步通知</span>
+</div><div class="hljs-line">app.use(<span class="hljs-string">'/receive/wxReceive'</span>, wxpay.useWXCallback(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg, req, res, next</span>)</span>{
+</div><div class="hljs-line">  <span class="hljs-comment">// 处理商户业务逻辑</span>
+</div><div class="hljs-line">  <span class="hljs-comment">// res.success() 向微信返回处理成功信息，res.fail()返回失败信息。</span>
+</div><div class="hljs-line">  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"收到支付回调"</span>);
+</div><div class="hljs-line">  <span class="hljs-built_in">console</span>.log(msg);
+</div><div class="hljs-line">  <span class="hljs-built_in">console</span>.log(req);
+</div><div class="hljs-line">  <span class="hljs-built_in">console</span>.log(res);
+</div><div class="hljs-line">  res.success();
+</div><div class="hljs-line">}));
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-number">6.2</span> 退款回调同支付回调。
+</div></code></pre>
+
+
+
+<h5 id="62-服务端处理微信的回调egg为例">6.2 服务端处理微信的回调（egg为例）</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line"><span class="hljs-number">6.2</span><span class="hljs-number">.1</span> 首先添加中间件 app/middleware/xmlparse.js
+</div><div class="hljs-line"><span class="hljs-number">6.2</span><span class="hljs-number">.2</span> 然后启用中间件 config/config.default.js
+</div><div class="hljs-line">      添加： exports.middleware = [<span class="hljs-string">'xmlparse'</span>];
+</div><div class="hljs-line"><span class="hljs-number">6.2</span><span class="hljs-number">.3</span> 路由中配置中间件 app/router.js
+</div><div class="hljs-line">      <span class="hljs-keyword">const</span> {router, controller, middleware} = app;
+</div><div class="hljs-line">      router.post(<span class="hljs-string">'/receive/wxReceive'</span>, middleware.xmlparse(), controller.home.wxReceive);
+</div><div class="hljs-line"><span class="hljs-number">6.2</span><span class="hljs-number">.4</span> 然后就可以在 app/controller/home.js 里写收到回调的处理了
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">        <span class="hljs-keyword">async</span> wxReceive() {
+</div><div class="hljs-line">            <span class="hljs-keyword">const</span> { ctx } = <span class="hljs-keyword">this</span>;
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">            <span class="hljs-comment">// 支付结果异步通知</span>
+</div><div class="hljs-line">            wxpay.eggWXCallback(ctx.req, ctx.res, ctx.next, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg, req, res, next</span>)</span>{
+</div><div class="hljs-line">                <span class="hljs-comment">// 处理商户业务逻辑</span>
+</div><div class="hljs-line">                <span class="hljs-comment">// res.success() 向微信返回处理成功信息，res.fail()返回失败信息。</span>
+</div><div class="hljs-line">                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"收到支付回调"</span>);
+</div><div class="hljs-line">                <span class="hljs-built_in">console</span>.log(msg);
+</div><div class="hljs-line">                res.success();
+</div><div class="hljs-line">            });
+</div><div class="hljs-line">        }
+</div><div class="hljs-line"><span class="hljs-number">6.2</span><span class="hljs-number">.5</span> 退款回调同支付回调。
+</div></code></pre>
+
+
+
+<h4 id="遇到的问题">遇到的问题：</h4>
+
+<p>1.request 请求总是失败：报错说不认识 toString() <br>
+问题原因：证书路径.p12 是一个空的，需要使用真实证书和对应的 微信支付key mch_id app_id等。 <br>
+2.支付回调请求总是无法解析，报错 stream.on 不是一个 action <br>
+问题原因： <br>
+2.1 没有使用中间件，xmlparse.js <br>
+2.2 没有使用接收到的 this.ctx.req 传入 wxpay.js 里做处理（问题已修复）。</p></div></body></html>
